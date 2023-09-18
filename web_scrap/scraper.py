@@ -4,20 +4,28 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 def perform_search(url, search_text):
     print("Performing search...")
 
     chrome_options = Options()
-    # chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+
 
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
-
+    
+    wait = WebDriverWait(driver, 10)
+    search_box = wait.until(EC.presence_of_element_located((By.NAME, 'q')))
     # Suponiendo que el cuadro de búsqueda tiene el atributo name='q'
-    search_box = driver.find_element_by_name("q")
+    # search_box = driver.find_element_by_name("q")
     search_box.send_keys(search_text)
     search_box.send_keys(Keys.RETURN)  # Simula la tecla Enter
 
