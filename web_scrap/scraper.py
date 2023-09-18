@@ -14,15 +14,25 @@ def perform_search(url, search_text):
     print("Performing search...")
 
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--no-sandbox")
+    # chrome_options.add_argument("--disable-dev-shm-usage")
+    # chrome_options.add_experimental_option("prefs", {
+    #   "profile.default_content_setting_values.cookies": 1,  # Habilita cookies
+    #   "profile.block_third_party_cookies": False  # Permitir cookies de terceros
+    # })
+    # chrome_options.add_argument('window-size=1200x600')
+    # chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 
+    # chrome_options.add_argument("user_agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15")
 
     driver = webdriver.Chrome(options=chrome_options)
+    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
     driver.get(url)
     
-    wait = WebDriverWait(driver, 10)
+    # print(driver.page_source)
+    
+    wait = WebDriverWait(driver, 5)
     search_box = wait.until(EC.presence_of_element_located((By.NAME, 'q')))
     # Suponiendo que el cuadro de búsqueda tiene el atributo name='q'
     # search_box = driver.find_element_by_name("q")
