@@ -15,7 +15,7 @@ def perform_search(url, search_text):
 
     chrome_options = Options()
     # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--no-sandbox") #! Mandatory option to run the script in a VPS
     # chrome_options.add_argument("--disable-dev-shm-usage")
     # chrome_options.add_experimental_option("prefs", {
     #   "profile.default_content_setting_values.cookies": 1,  # Habilita cookies
