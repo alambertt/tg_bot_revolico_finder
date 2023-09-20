@@ -2,10 +2,9 @@ import asyncio
 import logging
 import os
 
-from commands import *
-from constants import *
+# from tg_bot import commands, constants, helpers, tg_logger
+from tg_bot.commands import *
 from dotenv import load_dotenv
-from helpers import error_handler, user_to_str
 from telegram import ForceReply, Update
 from telegram.constants import ParseMode
 from telegram.ext import (
@@ -15,10 +14,6 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from tg_logger import *
-
-# Enable logging
-
 
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.getenv("BOT_TOKEN")

@@ -5,7 +5,8 @@ import traceback
 
 from telegram import Update
 from telegram.ext import ContextTypes
-from tg_logger import *
+
+from .tg_logger import send_exception_log, send_log
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO

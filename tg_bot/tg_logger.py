@@ -1,5 +1,5 @@
 from telegram.ext import ContextTypes
-from constants import CHANNEL_LOGS_ID
+from .constants import CHANNEL_LOGS_ID
 from telegram.constants import ParseMode
 
 
