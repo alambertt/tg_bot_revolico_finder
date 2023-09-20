@@ -1,8 +1,10 @@
+from constants import *
 from tg_logger import *
 from telegram.ext import (
     ContextTypes,
 )
 from telegram import ForceReply, Update
+
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -35,10 +37,16 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
-    query = update.message.text.split(' ')[1]
-    if not query:
-        await update.message.reply_text("Por favor, especifique una búsqueda")
+    text_msg = update.message.text
+    # Check if the text has not spaces
+    if " " not in text_msg:
+        await update.message.reply_html(TEXT_EMPTY)
         return
-    await send_log(message=f'Query <pre>{query}</pre> executed by {user.mention_html()}',context=context)
-    await update.message.reply_text('Buscando...')
+    query = text_msg.split("/search")[1]
+    print(query)
+    await send_log(
+        message=f"Query <pre>{query}</pre> executed by {user.mention_html()}",
+        context=context,
+    )
+    await update.message.reply_text("Buscando...")
     return
