@@ -30,16 +30,12 @@ def perform_search(url, search_text):
     driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
     driver.get(url)
     
-    # print(driver.page_source)
     
     wait = WebDriverWait(driver, 5)
     search_box = wait.until(EC.presence_of_element_located((By.NAME, 'q')))
-    # Suponiendo que el cuadro de búsqueda tiene el atributo name='q'
-    # search_box = driver.find_element_by_name("q")
     search_box.send_keys(search_text)
     search_box.send_keys(Keys.RETURN)  # Simula la tecla Enter
 
-    # Espera para asegurar que la página tenga tiempo de cargar los resultados
     time.sleep(5)
 
     page_source = driver.page_source
@@ -54,18 +50,34 @@ def scrape_top_results(html_content, limit=10):
     soup = BeautifulSoup(html_content, "html.parser")
 
     li_elements = soup.select("ul li")[:limit]
-
+    print(f'Encontrados {len(li_elements)} elementos')
     results = []
+    
+    # Extraer la información relevante de cada elemento
     for li in li_elements:
-        results.append(
-            li.text.strip()
-        )  # Utilizo .strip() para eliminar espacios en blanco al inicio y al final
+        # Fecha del anuncio
+        datetime_tag = li.find('time')
+        date_posted = ''
+        if datetime_tag:
+            datetime_str = datetime_tag.get('datetime')
+            # Convertir la fecha (si es necesario)
+            date_posted = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(datetime_str) / 1000.0))
+        else:
+            date_posted = "No disponible"
+
+        location_tag = li.select_one('span.iNbnEX')
+        location = location_tag.text if location_tag else "No disponible"
+
+        link_tag = li.find('a', href=True)
+        link = 'https://revolico.com'+link_tag['href'] if link_tag else "No disponible"
+
+        results.append({'date': date_posted, 'location': location, 'link': link})
 
     return results
 
 
 if __name__ == "__main__":
-    base_url = "http://revolico.com/"  # Reemplaza con la URL real
+    base_url = "https://revolico.com/"  # Reemplaza con la URL real
     search_text = "iPhone 14"
 
     search_results_page = perform_search(base_url, search_text)
@@ -73,4 +85,4 @@ if __name__ == "__main__":
 
     print("Top 10 resultados de la búsqueda:")
     for i, result in enumerate(results):
-        print(f"{i+1}. {result}")
+        print(f"{i+1}. Fecha: {result['date']}, Lugar: {result['location']}, Link: {result['link']}")
