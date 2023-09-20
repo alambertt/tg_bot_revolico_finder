@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+NO_DATA_AVAILABLE='No disponible...'
 
 def perform_search(url, search_text):
     print("Performing search...")
@@ -63,13 +64,13 @@ def scrape_top_results(html_content, limit=10):
             # Convertir la fecha (si es necesario)
             date_posted = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(datetime_str) / 1000.0))
         else:
-            date_posted = "No disponible"
+            date_posted = NO_DATA_AVAILABLE
 
         location_tag = li.select_one('span.iNbnEX')
-        location = location_tag.text if location_tag else "No disponible"
+        location = location_tag.text if location_tag else NO_DATA_AVAILABLE
 
         link_tag = li.find('a', href=True)
-        link = 'https://revolico.com'+link_tag['href'] if link_tag else "No disponible"
+        link = 'https://revolico.com'+link_tag['href'] if link_tag else NO_DATA_AVAILABLE
 
         results.append({'date': date_posted, 'location': location, 'link': link})
 
