@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 NO_DATA_AVAILABLE = "No disponible..."
-TIMEOUT=7
+TIMEOUT=10
 
 
 def perform_search(url, search_text):
