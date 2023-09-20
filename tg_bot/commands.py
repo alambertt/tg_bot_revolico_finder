@@ -49,7 +49,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await update.message.reply_text("Buscando...")
         items = scraper.find(search_text=query)
         msg = "\n\n".join(
-            f'{i+1}. <a href="{item["link"]}">{item["text"][:long_text]+"..." if len(item["text"]) > long_text else item["text"]}</a>. Publicado {item["date"]} en {item["location"]}'
+            f'{i+1}. <a href="{item["link"]}">{item["text"][:long_text]+"..." if len(item["text"]) > long_text else item["text"]}</a>. Publicado <i>{item["date"]}</i> en {item["location"]}'
             for i, item in enumerate(items)
         )
         await update.message.reply_html(msg)

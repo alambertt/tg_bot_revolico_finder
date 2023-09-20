@@ -1,4 +1,5 @@
 import time
+import arrow
 
 import requests
 from bs4 import BeautifulSoup
@@ -57,10 +58,7 @@ def scrape_top_results(html_content, limit=10):
         date_posted = ""
         if datetime_tag:
             datetime_str = datetime_tag.get("datetime")
-            # Convertir la fecha (si es necesario)
-            date_posted = time.strftime(
-                "%Y-%m-%d %H:%M:%S", time.gmtime(int(datetime_str) / 1000.0)
-            )
+            date_posted = pretty_date(time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(int(datetime_str) / 1000.0)))
         else:
             date_posted = NO_DATA_AVAILABLE
 
@@ -73,6 +71,8 @@ def scrape_top_results(html_content, limit=10):
         )
 
         ad_text = li.get_text().strip()
+        if not ad_text:
+            ad_text = NO_DATA_AVAILABLE
 
         results.append(
             {
@@ -90,3 +90,7 @@ def find(search_text="iPhone 14", base_url="https://revolico.com/", limit=10):
     search_results_page = perform_search(base_url, search_text)
     results = scrape_top_results(search_results_page, limit)
     return results
+
+def pretty_date(date_posted):
+    dt = arrow.get(date_posted, 'YYYY-MM-DD HH:mm:ss')
+    return dt.humanize(locale='es')  # Cambiar 'es' al idioma que prefieras
