@@ -37,18 +37,26 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    user = update.effective_user
-    text_msg = update.message.text
-
-    if " " not in text_msg:
+    try:
+        long_text = 40
+        user = update.effective_user
+        text_msg = update.message.text
+        query = text_msg.split("/search")[1]
+        await send_log(
+            message=f"Query <pre>{query}</pre> executed by {user.mention_html()}",
+            context=context,
+        )
+        await update.message.reply_text("Buscando...")
+        items = scraper.find(search_text=query)
+        msg = "\n\n".join(
+            f'{i+1}. <a href="{item["link"]}">{item["text"][:long_text]+"..." if len(item["text"]) > long_text else item["text"]}</a>. Publicado {item["date"]} en {item["location"]}'
+            for i, item in enumerate(items)
+        )
+        await update.message.reply_html(msg)
+        return
+    except IndexError as e:
         await update.message.reply_html(TEXT_EMPTY)
         return
-    query = text_msg.split("/search")[1]
-
-    await send_log(
-        message=f"Query <pre>{query}</pre> executed by {user.mention_html()}",
-        context=context,
-    )
-    await update.message.reply_text("Buscando...")
-
-    return
+    except Exception as e:
+        await send_exception_log("Search Command error: " + str(e), context)
+        return
