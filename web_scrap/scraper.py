@@ -86,7 +86,7 @@ def scrape_top_results(html_content, limit=10):
     return results
 
 
-def find(search_text="iPhone 14", base_url="https://revolico.com/", limit=10):
+def find(search_text="iPhone 14", base_url="https://revolico.com/", limit=15):
     search_results_page = perform_search(base_url, search_text)
     results = scrape_top_results(search_results_page, limit)
     return results
