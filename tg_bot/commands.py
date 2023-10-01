@@ -64,7 +64,8 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 def get_items_to_str(query):
     items = scraper.find(search_text=query)
     msg = "\n\n".join(
-        f'{i+1}. <a href="{item["link"]}">{item["text"][:LONG_TEXT]+"..." if len(item["text"]) > LONG_TEXT else item["text"]}</a>. Publicado <i>{item["date"]}</i> en {item["location"]}'
+        # f'{i+1}. <a href="{item["link"]}">{item["text"][:LONG_TEXT]+"..." if len(item["text"]) > LONG_TEXT else item["text"]}</a>. Publicado <i>{item["date"]}</i> en {item["location"]}'
+        f'{i+1}. <a href="{item["link"]}">{item["text"][:LONG_TEXT]+"..." if len(item["text"]) > LONG_TEXT else item["text"]}</a>'
         for i, item in enumerate(items)
     )
     return msg

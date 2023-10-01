@@ -1,3 +1,4 @@
 web_scrap/tempCodeRunnerFile.py
 .env
 *.pyc
+.DS_Store
